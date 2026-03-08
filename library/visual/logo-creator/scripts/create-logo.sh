@@ -6,6 +6,7 @@ BRAND=""
 STYLE="minimalist"
 COLOR="black on white"
 CONCEPT=""
+PROVIDER_FLAG=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -13,12 +14,13 @@ while [[ $# -gt 0 ]]; do
         --style) STYLE="$2"; shift 2 ;;
         --color) COLOR="$2"; shift 2 ;;
         --concept) CONCEPT="$2"; shift 2 ;;
+        --provider) PROVIDER_FLAG="--provider $2"; shift 2 ;;
         *) shift ;;
     esac
 done
 
 if [ -z "$CONCEPT" ]; then
-    echo "Usage: bash create-logo.sh --concept 'description' --brand 'name' [--style minimalist|abstract|mascot] [--color 'palette']"
+    echo "Usage: bash create-logo.sh --concept 'description' --brand 'name' [--style minimalist|abstract|mascot] [--color 'palette'] [--provider fal|muapi]"
     exit 1
 fi
 
@@ -35,4 +37,4 @@ TYPOGRAPHY: Geometric sans-serif wordmark
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CORE_SCRIPT="$SCRIPT_DIR/../../../../core/media/generate-image.sh"
 
-bash "$CORE_SCRIPT" --prompt "$EXPERT_PROMPT" --model flux-dev --aspect-ratio 1:1 --json
+bash "$CORE_SCRIPT" --prompt "$EXPERT_PROMPT" --model flux-dev --aspect-ratio 1:1 $PROVIDER_FLAG --json

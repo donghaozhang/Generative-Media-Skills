@@ -6,6 +6,7 @@ PLATFORM="mobile"
 STYLE="modern"
 THEME="light"
 DESCRIPTION=""
+PROVIDER_FLAG=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -13,12 +14,13 @@ while [[ $# -gt 0 ]]; do
         --style) STYLE="$2"; shift 2 ;;
         --theme) THEME="$2"; shift 2 ;;
         --desc) DESCRIPTION="$2"; shift 2 ;;
+        --provider) PROVIDER_FLAG="--provider $2"; shift 2 ;;
         *) shift ;;
     esac
 done
 
 if [ -z "$DESCRIPTION" ]; then
-    echo "Usage: bash generate-mockup.sh --desc 'travel app' [--platform mobile|web] [--style glassmorphism|brutalist] [--theme light|dark]"
+    echo "Usage: bash generate-mockup.sh --desc 'travel app' [--platform mobile|web] [--style glassmorphism|brutalist] [--theme light|dark] [--provider fal|muapi]"
     exit 1
 fi
 
@@ -46,4 +48,4 @@ LAYOUT_PATTERN: $LAYOUT, professional whitespace, vector icons
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CORE_SCRIPT="$SCRIPT_DIR/../../../../core/media/generate-image.sh"
 
-bash "$CORE_SCRIPT" --prompt "$EXPERT_PROMPT" --model flux-dev $AR_FLAG --json
+bash "$CORE_SCRIPT" --prompt "$EXPERT_PROMPT" --model flux-dev $AR_FLAG $PROVIDER_FLAG --json

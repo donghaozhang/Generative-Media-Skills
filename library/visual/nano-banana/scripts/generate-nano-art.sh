@@ -10,6 +10,7 @@ LIGHTING="natural"
 RESOLUTION="1k"
 TEXT=""
 VIEW_FLAG=""
+PROVIDER_FLAG=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -21,12 +22,13 @@ while [[ $# -gt 0 ]]; do
         --resolution) RESOLUTION="$2"; shift 2 ;;
         --text) TEXT="$2"; shift 2 ;;
         --view) VIEW_FLAG="--view"; shift ;;
+        --provider) PROVIDER_FLAG="--provider $2"; shift 2 ;;
         *) shift ;;
     esac
 done
 
 if [ -z "$SUBJECT" ]; then
-    echo "Usage: bash generate-nano-art.sh --subject 'robot' [--action 'pouring coffee'] [--context 'cafe'] [--style 'photorealistic'] [--resolution 1k|2k|4k] [--text 'CAFE'] [--view]"
+    echo "Usage: bash generate-nano-art.sh --subject 'robot' [--action 'pouring coffee'] [--context 'cafe'] [--style 'photorealistic'] [--resolution 1k|2k|4k] [--text 'CAFE'] [--provider fal|muapi] [--view]"
     exit 1
 fi
 
@@ -37,7 +39,6 @@ if [ -n "$TEXT" ]; then
 fi
 
 # Nano-Banana Reasoning-Driven Prompt
-# Formula: Subject + Action + Context + Lighting + Style + Text
 EXPERT_PROMPT="[REASONING_BRIEF]
 SUBJECT: A highly detailed $SUBJECT.
 ACTION: The subject is $ACTION.
@@ -51,4 +52,4 @@ EXTRA: $TEXT_PROMPT.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CORE_SCRIPT="$SCRIPT_DIR/../../../../core/media/generate-image.sh"
 
-bash "$CORE_SCRIPT" --prompt "$EXPERT_PROMPT" --model "nano-banana-pro" --resolution "$RESOLUTION" $VIEW_FLAG --json
+bash "$CORE_SCRIPT" --prompt "$EXPERT_PROMPT" --model "nano-banana-pro" --resolution "$RESOLUTION" $VIEW_FLAG $PROVIDER_FLAG --json

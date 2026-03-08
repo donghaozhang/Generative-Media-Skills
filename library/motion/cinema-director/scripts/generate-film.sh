@@ -9,6 +9,7 @@ ASPECT="16:9"
 DURATION=5
 AUDIO_FLAG=""
 VIEW_FLAG=""
+PROVIDER_FLAG=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -19,12 +20,13 @@ while [[ $# -gt 0 ]]; do
         --duration) DURATION="$2"; shift 2 ;;
         --no-audio) AUDIO_FLAG="--no-audio"; shift ;;
         --view) VIEW_FLAG="--view"; shift ;;
+        --provider) PROVIDER_FLAG="--provider $2"; shift 2 ;;
         *) shift ;;
     esac
 done
 
 if [ -z "$SUBJECT" ]; then
-    echo "Usage: bash generate-film.sh --subject 'description' [--intent reveal|tense|epic] [--model veo3|kling] [--duration 5|10] [--no-audio] [--view]"
+    echo "Usage: bash generate-film.sh --subject 'description' [--intent reveal|tense|epic] [--model veo3|kling] [--duration 5|10] [--provider fal|muapi] [--no-audio] [--view]"
     exit 1
 fi
 
@@ -75,4 +77,4 @@ OPTICS: $LENS
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CORE_SCRIPT="$SCRIPT_DIR/../../../../core/media/generate-video.sh"
 
-bash "$CORE_SCRIPT" --prompt "$DIRECTOR_PROMPT" --model "$MODEL" --aspect-ratio "$ASPECT" --duration "$DURATION" $AUDIO_FLAG $VIEW_FLAG --async --json
+bash "$CORE_SCRIPT" --prompt "$DIRECTOR_PROMPT" --model "$MODEL" --aspect-ratio "$ASPECT" --duration "$DURATION" $AUDIO_FLAG $VIEW_FLAG $PROVIDER_FLAG --async --json
